@@ -6,7 +6,7 @@ import ErrorModal from "../Message/ErrorModal";
 const Product = (props) => {
   //useState for inputs
   const [retailer_Email, setEmail] = useState("");
-  
+
   const [name, setPro_Name] = useState("");
   const [price, setPro_Price] = useState("");
   const [description, setPro_Description] = useState("");
@@ -14,7 +14,7 @@ const Product = (props) => {
   const [Fur_Type, setFurnishedType] = useState("");
   const [Price, setPro_PriceTag] = useState("");
   const [area, setAreaTag] = useState("");
-  const [storedID, setStoredID]=useState("");
+  const [storedID, setStoredID] = useState("");
   const [band_Name, setBrandTag] = useState("");
 
   //State for error managment
@@ -52,30 +52,31 @@ const Product = (props) => {
     setAreaTag(event.target.value);
   };
 
-  var emailID="";
-  async function EmailCheckHandler(event){
+  var emailID = "";
+  async function EmailCheckHandler(event) {
     event.preventDefault();
     //event.preventDefault();
     await GetRetailerID();
     //console.log(emailID);
-
-  };
+  }
 
   async function GetRetailerID() {
     try {
       const response = await fetch(
-        process.env.API_ENDPOINT + "retailers/email/temp/" + retailer_Email,
+        process.env.REACT_APP_API_ENDPOINT +
+          "retailers/email/temp/" +
+          retailer_Email,
         {
           method: "GET",
         }
       );
-  
+
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-  
+
       const data = await response.json();
-  
+
       if (data.message === "Email found") {
         toast.success("Retailer Verified!!");
         emailID = data.email._id;
@@ -91,14 +92,11 @@ const Product = (props) => {
       // Handle error
     }
   }
-  
-  
-  
 
   const tags = [];
-  var productID="";
+  var productID = "";
 
-  async function AddProductHandler(event){
+  async function AddProductHandler(event) {
     //console.log(name+','+price+','+description+','+Pro_Type+','+Fur_Type+','+Price+','+area+','+band_Name);
 
     //prevent the refreshing of page
@@ -125,7 +123,6 @@ const Product = (props) => {
       return;
     }
 
-    
     tags.push(Pro_Type);
     tags.push(Fur_Type);
     tags.push(Price);
@@ -133,99 +130,74 @@ const Product = (props) => {
     tags.push(band_Name);
 
     //Add data by calling  addProduct  Function
-    
+
     await addProduct();
 
     console.log(productID);
     console.log(storedID);
-    
-    //Assign product id to a retailer using retailer id 
-    
+
+    //Assign product id to a retailer using retailer id
+
     await assignProduct(productID, storedID);
-
-    
-  };
-
-
-
-
-
-
-
-
-
-  
+  }
 
   //Function to Assign product ID using ASYNC fetch function
 
-  async function assignProduct(p_id, ret_id){
-
+  async function assignProduct(p_id, ret_id) {
     //console.log(p_id, ret_id);
     try {
-      await fetch(process.env.API_ENDPOINT + "retailers/addProduct/" + ret_id, {
-        method: "PATCH",
-        crossDomain: true,
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify({
-          productId: p_id,
-        }),
-      });
+      await fetch(
+        process.env.REACT_APP_API_ENDPOINT + "retailers/addProduct/" + ret_id,
+        {
+          method: "PATCH",
+          crossDomain: true,
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            productId: p_id,
+          }),
+        }
+      );
     } catch (error) {
       console.error(error);
       // Handle error
     }
   }
 
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //Function add Product using ASYNC fetch function
-    async function addProduct(){
-
-
-
+  //Function add Product using ASYNC fetch function
+  async function addProduct() {
     try {
-      const response = await fetch(process.env.API_ENDPOINT + "products/", {
-        method: "POST",
-        crossDomain: true,
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify({
-          name,
-          price,
-          description,
-          tags,
-          images: "",
-        }),
-      });
-  
+      const response = await fetch(
+        process.env.REACT_APP_API_ENDPOINT + "products/",
+        {
+          method: "POST",
+          crossDomain: true,
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            name,
+            price,
+            description,
+            tags,
+            images: "",
+          }),
+        }
+      );
+
       const data = await response.json();
-  
+
       console.log(data);
-  
+
       if (data.message === "Product Created") {
         toast.success("Product Added!");
 
-        productID=data.productId;
+        productID = data.productId;
         //console.log(productID)
       } else {
         toast.error("Failed to add product!!");
@@ -234,8 +206,6 @@ const Product = (props) => {
       console.error("Error:", error);
     }
   }
-
-  
 
   //function to clear the screen the error message
   const errorHandler = () => {

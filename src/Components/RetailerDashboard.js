@@ -53,8 +53,8 @@ const RetailerDashboard = () => {
   //Get Retailer Data from DB
   async function getRetailerData() {
     try {
-      const response = await fetch(
-        process.env.API_ENDPOINT+"retailers/email/temp/" + location.state.email,
+      const response = await fetch(process.env.REACT_APP_API_ENDPOINT+
+        "retailers/email/temp/" + location.state.email,
         {
           method: "GET",
         }
@@ -90,7 +90,9 @@ const RetailerDashboard = () => {
   async function getProduct() {
     try {
       const response = await fetch(
-        process.env.API_ENDPOINT + "products/" + "647355c0785257a74c862e74",
+        process.env.REACT_APP_API_ENDPOINT +
+          "products/" +
+          "647355c0785257a74c862e74",
         {
           method: "GET",
         }
@@ -161,7 +163,7 @@ const RetailerDashboard = () => {
                 </Link>
                 <span className="tooltip">Add Affiliate</span>
               </li>
-              
+
               <li>
                 <Link to="/changepassword">
                   <i className="bx bx-cog"></i>

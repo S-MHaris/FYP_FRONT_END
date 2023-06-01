@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import ErrorModal from "../Message/ErrorModal"
-import './SignUp.css';
+import ErrorModal from "../Message/ErrorModal";
+import "./SignUp.css";
 
 const InfluenceSignUp = () => {
   const [name, setFullName] = useState("");
@@ -13,7 +13,7 @@ const InfluenceSignUp = () => {
   const [bankName, setBankName] = useState("");
 
   //State for error managment
-  const [errorMessage, setError]=useState("");
+  const [errorMessage, setError] = useState("");
 
   //Code For SignUp Button Handler
   const signUpButtonHandler = (event) => {
@@ -21,19 +21,26 @@ const InfluenceSignUp = () => {
     event.preventDefault();
 
     //checking for empty detalis
-    if(name.trim().length===0 || socials.trim().length===0 ||email.trim().length===0 ||
-        password.trim().length===0 || comission.trim().length===0  || accountNumber.trim().length===0 || bankName.trim().length===0){
-            setError({
-              title: "Empty Inputs",
-              message:"Please provide all the details!"
-            });
-            return;
-        }
+    if (
+      name.trim().length === 0 ||
+      socials.trim().length === 0 ||
+      email.trim().length === 0 ||
+      password.trim().length === 0 ||
+      comission.trim().length === 0 ||
+      accountNumber.trim().length === 0 ||
+      bankName.trim().length === 0
+    ) {
+      setError({
+        title: "Empty Inputs",
+        message: "Please provide all the details!",
+      });
+      return;
+    }
 
-    if(+comission<0){
+    if (+comission < 0) {
       setError({
         title: "Invalide Comission",
-        message:"Please provide valide comission(non-negative value)"
+        message: "Please provide valide comission(non-negative value)",
       });
       return;
     }
@@ -43,20 +50,16 @@ const InfluenceSignUp = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(email)) {
-
-   
       setError({
         title: "Invalid Email",
-        message: "Email must contain @ and .com"
+        message: "Email must contain @ and .com",
       });
 
-      
       return;
     }
 
-
     //Sending data to Node.js to Store in Data Base
-    fetch(process.env.API_ENDPOINT + "influencers/signup", {
+    fetch(process.env.REACT_APP_API_ENDPOINT + "influencers/signup", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -125,15 +128,24 @@ const InfluenceSignUp = () => {
   };
 
   //function to clear the screen the error message
-  const errorHandler=()=>{
+  const errorHandler = () => {
     setError(null);
-  }
+  };
 
   return (
     <>
-      {errorMessage && <ErrorModal title={errorMessage.title} message={errorMessage.message} onConfirm={errorHandler}/>}
-      <section id="infLogInSec" className="text-gray-600 body-font  hidden back">
-      <div className="container px-5 py-5 mx-auto flex flex-wrap items-center">
+      {errorMessage && (
+        <ErrorModal
+          title={errorMessage.title}
+          message={errorMessage.message}
+          onConfirm={errorHandler}
+        />
+      )}
+      <section
+        id="infLogInSec"
+        className="text-gray-600 body-font  hidden back"
+      >
+        <div className="container px-5 py-5 mx-auto flex flex-wrap items-center">
           <div className="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0">
             <h1 className="title-font font-medium text-3xl text-gray-900">
               Sign Up as an Influencer

@@ -60,7 +60,7 @@ const AddAffiliateOffer = () => {
   async function GetRetailerID() {
     try {
       const response = await fetch(
-        process.env.API_ENDPOINT+"retailers/email/temp/" + retailer_Email,
+        process.env.REACT_APP_API_ENDPOINT+"retailers/email/temp/" + retailer_Email,
         {
           method: "GET",
         }

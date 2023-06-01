@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import { toast } from "react-toastify";
-import ErrorModal from "../Message/ErrorModal"
+import ErrorModal from "../Message/ErrorModal";
 
 const ChangePassowrd = () => {
   const [email, setEmail] = useState("");
@@ -10,9 +10,8 @@ const ChangePassowrd = () => {
   const [con_password, setCon_Password] = useState("");
 
   //State for error managment
-  const [errorMessage, setError]=useState("");
+  const [errorMessage, setError] = useState("");
 
-  
   const emailHandler = (event) => {
     event.preventDefault();
 
@@ -30,93 +29,52 @@ const ChangePassowrd = () => {
     setCon_Password(event.target.value);
   };
 
-  var id="";          //to store the id of user
-  var user="No_User";   //to check the type of user
+  var id = ""; //to store the id of user
+  var user = "No_User"; //to check the type of user
 
   async function verifyBtn() {
-    
-
     //Fetching retailer data if  he/she is retailer
     //Making wait for completion
     await f_Influencer();
 
     //Still user type is not detemined, fetch 2nd API
-    if(user==="No_User"){
-
+    if (user === "No_User") {
       await f_Retailer();
     }
-    
+
     //No record after 2nd fetch
-    if(user==="No_User"){
+    if (user === "No_User") {
       toast.error("No Record Found!!");
-    }
-    
-  };
-
-  //function to fetch Influencer details
-  async function f_Influencer() {
-
-    
-    try {
-      const response = await fetch(process.env.API_ENDPOINT+"influencers/temp/" + email, {
-        method: "GET",
-      });
-  
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-  
-      const data = await response.json();
-  
-      if (data.message === "Email found") {
-        toast.success("Influencer Verified!!");
-
-        //setting the user type influencer
-        user="Influencer";
-
-        
-        console.log(data.email._id);
-
-        //setting the ID of Influencer
-        id=data.email._id;
-
-        console.log(user);
-      } else {
-        console.log("Unexpected response:", data);
-      }
-    } catch (error) {
-      console.error(error);
     }
   }
 
-
-  //function to fetch Retailer details
-  async function f_Retailer() {
-
+  //function to fetch Influencer details
+  async function f_Influencer() {
     try {
       const response = await fetch(
-        process.env.API_ENDPOINT + "retailers/email/temp/" + email,
+        process.env.REACT_APP_API_ENDPOINT + "influencers/temp/" + email,
         {
           method: "GET",
         }
       );
-  
+
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-  
-      const data = await response.json();
-  
-      if (data.message === "Email found") {
-        toast.success("Retailer Verified!!");
-        //setting the user type influencer
-        user="Retailer";
 
-        
+      const data = await response.json();
+
+      if (data.message === "Email found") {
+        toast.success("Influencer Verified!!");
+
+        //setting the user type influencer
+        user = "Influencer";
+
         console.log(data.email._id);
 
         //setting the ID of Influencer
-        id=data.email._id;
+        id = data.email._id;
+
         console.log(user);
       } else {
         console.log("Unexpected response:", data);
@@ -124,62 +82,82 @@ const ChangePassowrd = () => {
     } catch (error) {
       console.error(error);
     }
-
-    
   }
-  
-  
+
+  //function to fetch Retailer details
+  async function f_Retailer() {
+    try {
+      const response = await fetch(
+        process.env.REACT_APP_API_ENDPOINT + "retailers/email/temp/" + email,
+        {
+          method: "GET",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+
+      if (data.message === "Email found") {
+        toast.success("Retailer Verified!!");
+        //setting the user type influencer
+        user = "Retailer";
+
+        console.log(data.email._id);
+
+        //setting the ID of Influencer
+        id = data.email._id;
+        console.log(user);
+      } else {
+        console.log("Unexpected response:", data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   //Change Button
-  async  function changePass_Btn(){
-      //console.log(id);
+  async function changePass_Btn() {
+    //console.log(id);
 
-      //data to change
-      const change=[{propname:"password", value:password}]
+    //data to change
+    const change = [{ propname: "password", value: password }];
 
-      
-      if(user==="Retailer"){
-        //console.log("User is Reatiler")
-        
-       retailer_ChnagePassword(id, change)
+    if (user === "Retailer") {
+      //console.log("User is Reatiler")
 
-
-      }
-      else if(user==="Influencer"){
-        console.log("User is Influencer")
-      }
-      else{
-        //No user Found so no password change
-        setError({
-          title: "Verify Email",
-          message:"Please verify yourself by enterying your Emil"
-        });
-        return
-      }
+      retailer_ChnagePassword(id, change);
+    } else if (user === "Influencer") {
+      console.log("User is Influencer");
+    } else {
+      //No user Found so no password change
+      setError({
+        title: "Verify Email",
+        message: "Please verify yourself by enterying your Emil",
+      });
+      return;
+    }
   }
-
 
   //Retailer Change Password
-  async function retailer_ChnagePassword(userId, data) {
+  async function retailer_ChnagePassword(userId, data) {}
 
-
-    
-    
-  };
-    
-
-
-  
-
-   //function to clear the screen the error message
-   const errorHandler=()=>{
+  //function to clear the screen the error message
+  const errorHandler = () => {
     setError(null);
-  }
-  
+  };
 
   return (
     <>
-    {errorMessage && <ErrorModal title={errorMessage.title} message={errorMessage.message} onConfirm={errorHandler}/>}
+      {errorMessage && (
+        <ErrorModal
+          title={errorMessage.title}
+          message={errorMessage.message}
+          onConfirm={errorHandler}
+        />
+      )}
       <Header />
 
       <section className="text-gray-600 body-font">

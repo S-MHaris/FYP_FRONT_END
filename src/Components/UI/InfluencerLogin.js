@@ -1,76 +1,62 @@
 import React, { useState } from "react";
 import ErrorModal from "../Message/ErrorModal";
 import { toast } from "react-toastify";
-import {  useNavigate  } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 
 const InfluencerLogin = () => {
-
   //States for getting email and password
-  const[InfluencerEmail,setInfluencerEmail]=useState("");
-  const [InfluencerPassword, setInfluencerPassword]=useState("");
+  const [InfluencerEmail, setInfluencerEmail] = useState("");
+  const [InfluencerPassword, setInfluencerPassword] = useState("");
 
   //state for error checking
-  const [errorMessage, setError]=useState("");
+  const [errorMessage, setError] = useState("");
 
-  
+  //Functions to Handle inputs
+  const emailHandler = (event) => {
+    setInfluencerEmail(event.target.value);
+  };
 
-
-  //Functions to Handle inputs 
-  const emailHandler=(event)=>{
-      setInfluencerEmail(event.target.value);    
-  }
-
-  const passwordHandler=(event)=>{
+  const passwordHandler = (event) => {
     setInfluencerPassword(event.target.value);
-  }
+  };
 
   const navigate = useNavigate();
 
   //Login Button Handler
-  const SignInHandler=(event)=>{
-    
+  const SignInHandler = (event) => {
+    //prevent the refreshing of page
+    event.preventDefault();
 
+    //checking for empty detalis
+    if (
+      InfluencerEmail.trim().length === 0 ||
+      InfluencerPassword.trim().length === 0
+    ) {
+      setError({
+        title: "Empty Inputs",
+        message: "Please provide all the details!",
+      });
 
-     //prevent the refreshing of page
-     event.preventDefault();
+      return;
+    }
 
-     //checking for empty detalis
-     if(InfluencerEmail.trim().length===0 || InfluencerPassword.trim().length===0 ){
-            
-             setError({
-               title: "Empty Inputs",
-               message:"Please provide all the details!"
-             });
+    //Verify Email
 
-             
-             return;
-         }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-      //Verify Email
+    if (!emailRegex.test(InfluencerEmail)) {
+      setError({
+        title: "Invalid Email",
+        message: "Email must contain @ and .com",
+      });
 
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-      if (!emailRegex.test(InfluencerEmail)) {
-
-     
-        setError({
-          title: "Invalid Email",
-          message: "Email must contain @ and .com"
-        });
-
-        
-        return;
-      }
-      
-
-      
-
+      return;
+    }
 
     //console.log(InfluencerEmail+','+InfluencerPassword);
 
     //fetch function for Login
-    fetch(process.env.API_ENDPOINT + "influencers/login", {
+    fetch(process.env.REACT_APP_API_ENDPOINT + "influencers/login", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -104,20 +90,24 @@ const InfluencerLogin = () => {
       });
   };
 
+  //function to clear the screen the error message
+  const errorHandler = () => {
+    setError(null);
+  };
 
-
- 
-
-  
-     //function to clear the screen the error message
-     const errorHandler=()=>{
-      setError(null);
-    }
-
-    return (
+  return (
     <>
-     {errorMessage && <ErrorModal title={errorMessage.title} message={errorMessage.message} onConfirm={errorHandler}/>}
-      <section id="infLogInSec" className="text-gray-600 body-font hidden background">
+      {errorMessage && (
+        <ErrorModal
+          title={errorMessage.title}
+          message={errorMessage.message}
+          onConfirm={errorHandler}
+        />
+      )}
+      <section
+        id="infLogInSec"
+        className="text-gray-600 body-font hidden background"
+      >
         <div className="container px-5 py-24 mx-auto flex flex-wrap items-center">
           <div className="flex flex-col text-center w-full mb-12">
             <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">
@@ -130,7 +120,10 @@ const InfluencerLogin = () => {
           </div>
           <div className="container px-5 py-20 mx-auto flex flex-wrap items-center lg:w-2/6 md:w-1/3 bg-gray-100 rounded-lg flex flex-col">
             <div className="relative flex-grow w-full">
-              <label htmlFor="i_email" className="leading-7 text-sm text-gray-600">
+              <label
+                htmlFor="i_email"
+                className="leading-7 text-sm text-gray-600"
+              >
                 Email
               </label>
               <input
@@ -142,7 +135,10 @@ const InfluencerLogin = () => {
               />
             </div>
             <div className="relative flex-grow w-full">
-              <label htmlFor="i_password" className="leading-7 text-sm text-gray-600">
+              <label
+                htmlFor="i_password"
+                className="leading-7 text-sm text-gray-600"
+              >
                 Password
               </label>
               <input
