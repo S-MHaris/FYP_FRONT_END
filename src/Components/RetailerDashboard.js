@@ -134,17 +134,17 @@ const RetailerDashboard = () => {
                 <span className="tooltip">Search</span>
               </li>
               <li>
-                <a href="#">
+                <button>
                   <i className="bx bx-grid-alt"></i>
                   <span className="link_name">Welcome</span>
-                </a>
+                </button>
                 <span className="tooltip">Welcome</span>
               </li>
               <li>
-                <Link href="#">
+                <button>
                   <i className="bx bx-user"></i>
                   <span className="link_name">Profile</span>
-                </Link>
+                </button>
                 <span className="tooltip">Profile</span>
               </li>
               <li>
