@@ -54,7 +54,7 @@ const RetailerDashboard = () => {
   async function getRetailerData() {
     try {
       const response = await fetch(
-        "http://localhost:80/retailers/email/temp/" + location.state.email,
+        process.env.API_ENDPOINT+"retailers/email/temp/" + location.state.email,
         {
           method: "GET",
         }
@@ -90,7 +90,7 @@ const RetailerDashboard = () => {
   async function getProduct() {
     try {
       const response = await fetch(
-        "http://localhost:80/products/" + "647355c0785257a74c862e74",
+        process.env.API_ENDPOINT + "products/" + "647355c0785257a74c862e74",
         {
           method: "GET",
         }

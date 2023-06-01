@@ -70,7 +70,7 @@ const InfluencerLogin = () => {
     //console.log(InfluencerEmail+','+InfluencerPassword);
 
     //fetch function for Login
-    fetch("http://localhost:80/influencers/login", {
+    fetch(process.env.API_ENDPOINT + "influencers/login", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -79,8 +79,8 @@ const InfluencerLogin = () => {
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({
-        email:InfluencerEmail,
-        password:InfluencerPassword,
+        email: InfluencerEmail,
+        password: InfluencerPassword,
       }),
     })
       .then((response) => response.json()) // Parse the response as JSON

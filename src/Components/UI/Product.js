@@ -64,7 +64,7 @@ const Product = (props) => {
   async function GetRetailerID() {
     try {
       const response = await fetch(
-        "http://localhost:80/retailers/email/temp/" + retailer_Email,
+        process.env.API_ENDPOINT + "retailers/email/temp/" + retailer_Email,
         {
           method: "GET",
         }
@@ -162,7 +162,7 @@ const Product = (props) => {
 
     //console.log(p_id, ret_id);
     try {
-      await fetch("http://localhost:80/retailers/addProduct/" + ret_id, {
+      await fetch(process.env.API_ENDPOINT + "retailers/addProduct/" + ret_id, {
         method: "PATCH",
         crossDomain: true,
         headers: {
@@ -201,7 +201,7 @@ const Product = (props) => {
 
 
     try {
-      const response = await fetch("http://localhost:80/products/", {
+      const response = await fetch(process.env.API_ENDPOINT + "products/", {
         method: "POST",
         crossDomain: true,
         headers: {

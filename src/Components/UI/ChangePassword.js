@@ -58,7 +58,7 @@ const ChangePassowrd = () => {
 
     
     try {
-      const response = await fetch("http://localhost:80/influencers/temp/" + email, {
+      const response = await fetch(process.env.API_ENDPOINT+"influencers/temp/" + email, {
         method: "GET",
       });
   
@@ -94,9 +94,12 @@ const ChangePassowrd = () => {
   async function f_Retailer() {
 
     try {
-      const response = await fetch("http://localhost:80/retailers/email/temp/" + email, {
-        method: "GET",
-      });
+      const response = await fetch(
+        process.env.API_ENDPOINT + "retailers/email/temp/" + email,
+        {
+          method: "GET",
+        }
+      );
   
       if (!response.ok) {
         throw new Error("Network response was not ok");

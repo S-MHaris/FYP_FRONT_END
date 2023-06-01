@@ -86,7 +86,7 @@ const RetailerSignUp = () => {
 
 
     //Sending data to Node.js to Store in Data Base
-    fetch("http://localhost:80/retailers/signup", {
+    fetch(process.env.API_ENDPOINT + "retailers/signup", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -95,12 +95,12 @@ const RetailerSignUp = () => {
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({
-        name:companyName,
-        email:email,
-        password:password,
-        address:address,
-        website:website,
-        description:description,
+        name: companyName,
+        email: email,
+        password: password,
+        address: address,
+        website: website,
+        description: description,
         bankDetails: {
           bankName: bankName,
           bankAccount: bankNumber,

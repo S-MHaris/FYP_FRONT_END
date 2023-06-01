@@ -56,7 +56,7 @@ const InfluenceSignUp = () => {
 
 
     //Sending data to Node.js to Store in Data Base
-    fetch("http://localhost:80/influencers/signup", {
+    fetch(process.env.API_ENDPOINT + "influencers/signup", {
       method: "POST",
       crossDomain: true,
       headers: {

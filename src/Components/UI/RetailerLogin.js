@@ -65,7 +65,7 @@ const Ret_SignUp=(event)=>{
    //console.log(InfluencerEmail+','+InfluencerPassword);
 
    //fetch function for Login
-   fetch("http://localhost:80/retailers/login", {
+   fetch(process.env.API_ENDPOINT + "retailers/login", {
      method: "POST",
      crossDomain: true,
      headers: {
@@ -74,8 +74,8 @@ const Ret_SignUp=(event)=>{
        "Access-Control-Allow-Origin": "*",
      },
      body: JSON.stringify({
-       email:Ret_Email,
-       password:Ret_Password,
+       email: Ret_Email,
+       password: Ret_Password,
      }),
    })
      .then((response) => response.json()) // Parse the response as JSON
@@ -83,14 +83,12 @@ const Ret_SignUp=(event)=>{
        // Handle the response data
        console.log(data); // You can check the response data in the console
        if (data.message === "Auth Successful") {
+         const retailerId = data.userId;
+         console.log(retailerId);
 
-
-        const retailerId = data.userId;
-        console.log(retailerId);
-        
          // Show a success message or perform any desired actions
          // For example, you can display a success notification using a library like react-toastify
-         navigate("/retailerdashboard",{state :{id:1, email:Ret_Email}});
+         navigate("/retailerdashboard", { state: { id: 1, email: Ret_Email } });
          toast.success("Successfully Login as Retailer!");
        } else {
          // Show an error message or handle other cases
