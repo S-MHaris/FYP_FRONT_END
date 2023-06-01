@@ -51,7 +51,7 @@ const RetailerLogin = () => {
     //console.log(InfluencerEmail+','+InfluencerPassword);
 
     //fetch function for Login
-    fetch(process.env.REACT_APP_API_ENDPOINT + "retailers/login", {
+    fetch( process.env.REACT_APP_API_ENDPOINT + "retailers/login", {
       method: "POST",
       crossDomain: true,
       headers: {
